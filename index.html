@@ -62,12 +62,14 @@
       .header-tag{font-size:9px;letter-spacing:.06em;white-space:normal;max-width:105px}
       main{padding:28px 10px}.reader{border-radius:14px;padding:9px}
       .stage{min-height:390px}.page-wrap{height:72vh}
-      .page-wrap canvas{max-height:70vh}
+      .page-wrap canvas{max-width:100%;max-height:70vh}
+      .page-wrap.single canvas{max-width:100%;width:auto;height:auto}
       .page-wrap.spread::before{width:14px}
       .page-wrap.spread::after{width:1px}
       .controls{gap:7px}button{padding:9px 12px}.below{justify-content:center;text-align:center}
       .reader:fullscreen .page-wrap{height:96vh}
-      .reader:fullscreen .page-wrap canvas{max-height:92vh}
+      .reader:fullscreen .page-wrap canvas{max-width:100%;max-height:92vh}
+      .reader:fullscreen .page-wrap.single canvas{max-width:100%}
     }
   </style>
 </head>
@@ -135,7 +137,10 @@
   function getPageGroup(requested) {
     const last = pdf.numPages;
     let n = Math.max(1, Math.min(last, requested));
-    if (n === 1 || n === last) return {start:n, end:n, single:true};
+    // On phones, show one full-width page at a time for readability.
+    if (window.matchMedia('(max-width: 700px)').matches || n === 1 || n === last) {
+      return {start:n, end:n, single:true};
+    }
     if (n % 2 === 1) n -= 1;
     const end = Math.min(n + 1, last - (last > 1 ? 1 : 0));
     return {start:n, end:end >= n ? end : n, single:false};
@@ -176,7 +181,8 @@
         ]);
       } else {
         rightCanvas.hidden = true;
-        await drawPage(group.start, leftCanvas, availableWidth / 2, availableHeight);
+        const pageWidth = window.matchMedia('(max-width: 700px)').matches ? availableWidth : availableWidth / 2;
+        await drawPage(group.start, leftCanvas, pageWidth, availableHeight);
       }
       if (token !== renderToken) return;
       page = group.start;
@@ -208,7 +214,10 @@
   function goBack() {
     if (!pdf) return;
     const group = getPageGroup(page);
-    if (group.start > 1) renderPage(group.start === pdf.numPages ? group.start - 1 : group.start - 2);
+    if (group.start > 1) {
+      const mobile = window.matchMedia('(max-width: 700px)').matches;
+      renderPage(mobile ? group.start - 1 : (group.start === pdf.numPages ? group.start - 1 : group.start - 2));
+    }
   }
 
   prev.addEventListener('click',goBack);
