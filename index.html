@@ -24,33 +24,36 @@
     .eyebrow{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
     h1{font-family:"Playfair Display",serif;font-size:clamp(32px,5vw,54px);line-height:1.05;margin:12px 0 10px}
     .intro p{color:var(--muted);margin:0;font-size:14px}
-    .reader{background:#242326;border-radius:20px;padding:clamp(12px,2vw,24px);box-shadow:0 22px 70px #211a1a24}
+    .reader{background:radial-gradient(ellipse at center,#49464a 0%,#29272a 58%,#201f21 100%);border-radius:20px;padding:clamp(12px,2vw,24px);box-shadow:0 22px 70px #211a1a24;overflow:hidden}
     .stage{min-height:560px;display:flex;align-items:center;justify-content:center;perspective:1800px;position:relative}
-    .page-wrap{width:min(100%,1120px);position:relative;display:flex;justify-content:center;align-items:center;gap:0}
-    .page-wrap canvas{display:block;max-width:100%;height:auto;max-height:82vh;background:white;box-shadow:0 8px 28px #0005;border-radius:2px;transform-origin:left center;backface-visibility:hidden}
+    .page-wrap{width:min(100%,1240px);height: min(82vh,850px);position:relative;display:flex;justify-content:center;align-items:center;gap:0;isolation:isolate}
+    .page-wrap.spread::before{content:"";position:absolute;z-index:3;left:50%;top:2%;height:96%;width:28px;transform:translateX(-50%);pointer-events:none;background:linear-gradient(90deg,transparent 0%,#00000012 25%,#00000048 48%,#fff2 52%,#00000024 76%,transparent 100%);filter:blur(2px)}
+    .page-wrap.spread::after{content:"";position:absolute;z-index:2;left:50%;top:3%;bottom:3%;width:2px;transform:translateX(-50%);background:#1b1718;box-shadow:0 0 5px #0008;pointer-events:none}
+    .page-wrap canvas{display:block;max-width:50%;height:auto;max-height:80vh;background:#fff;box-shadow:0 8px 22px #0008;backface-visibility:hidden;position:relative}
+    .page-wrap.spread #leftCanvas{border-radius:4px 0 0 4px;box-shadow:-8px 10px 22px #0007, inset -10px 0 14px -12px #000}
+    .page-wrap.spread #rightCanvas{border-radius:0 4px 4px 0;box-shadow:8px 10px 22px #0007,inset 10px 0 14px -12px #000}
+    .page-wrap.single canvas{max-width:50%;border-radius:3px 7px 7px 3px;box-shadow:12px 12px 28px #0009,-3px 0 0 #e7e2d9, -6px 0 0 #aaa39a}
     .page-wrap canvas[hidden]{display:none}
-    .page-wrap .right-page{transform-origin:right center}
-    .page-wrap canvas.turn-next{animation:turnNext .28s ease-in forwards}
-    .page-wrap canvas.turn-prev{animation:turnPrev .28s ease-in forwards}
-    @keyframes turnNext{to{transform:perspective(900px) rotateY(-28deg);opacity:.25}}
-    @keyframes turnPrev{to{transform:perspective(900px) rotateY(28deg);opacity:.25}}
+    .page-wrap canvas.turn-next{animation:turnNext .32s ease-in forwards}
+    .page-wrap canvas.turn-prev{animation:turnPrev .32s ease-in forwards}
+    @keyframes turnNext{to{transform:perspective(1000px) rotateY(-22deg);filter:brightness(.75);opacity:.35}}
+    @keyframes turnPrev{to{transform:perspective(1000px) rotateY(22deg);filter:brightness(.75);opacity:.35}}
     .loading{color:#fff;padding:80px 10px;text-align:center}
     .spinner{width:30px;height:30px;border:3px solid #ffffff40;border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
     @keyframes spin{to{transform:rotate(360deg)}}
     .controls{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;color:#fff;margin-top:18px}
     button{border:1px solid #ffffff38;background:#ffffff12;color:#fff;border-radius:999px;padding:10px 17px;font:600 13px "DM Sans";cursor:pointer;transition:.2s}
-    button:hover{background:#ffffff25}
-    button:disabled{opacity:.35;cursor:not-allowed}
-    .counter{font-size:13px;color:#eee;min-width:125px;text-align:center;font-variant-numeric:tabular-nums}
+    button:hover{background:#ffffff25}button:disabled{opacity:.35;cursor:not-allowed}
+    .counter{font-size:13px;color:#eee;min-width:135px;text-align:center;font-variant-numeric:tabular-nums}
     .progress{height:3px;background:#ffffff24;border-radius:8px;margin:16px 4px 0;overflow:hidden}
     .bar{height:100%;width:0;background:#e14a5c;transition:width .25s}
     .below{display:flex;justify-content:space-between;gap:18px;align-items:center;margin:20px 4px 0;color:#d5d2d2;font-size:12px;flex-wrap:wrap}
     .below a{color:#fff;text-decoration:none;border-bottom:1px solid #ffffff70;padding-bottom:2px}
     footer{text-align:center;padding:25px 16px 35px;color:#777;font-size:12px}
-    .reader:fullscreen{width:100vw;height:100vh;border-radius:0;padding:0;margin:0;display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:#171719}
+    .reader:fullscreen{width:100vw;height:100vh;border-radius:0;padding:0;margin:0;display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at center,#49464a 0%,#242225 65%,#171618 100%)}
     .reader:fullscreen .stage{min-height:0;height:100vh;width:100%;padding:2vh 2vw}
-    .reader:fullscreen .page-wrap{width:100%;height:96vh;max-width:none;gap:0}
-    .reader:fullscreen .page-wrap canvas{max-height:94vh;max-width:50%;object-fit:contain;box-shadow:none}
+    .reader:fullscreen .page-wrap{width:100%;height:96vh;max-width:none}
+    .reader:fullscreen .page-wrap canvas{max-height:93vh}
     .reader:fullscreen .controls,.reader:fullscreen .progress,.reader:fullscreen .below{display:none}
     @media(max-width:700px){
       header{min-height:62px;padding:8px 14px}
@@ -58,10 +61,13 @@
       .brand-copy{font-size:13px}.brand small{font-size:8px;letter-spacing:.08em}
       .header-tag{font-size:9px;letter-spacing:.06em;white-space:normal;max-width:105px}
       main{padding:28px 10px}.reader{border-radius:14px;padding:9px}
-      .stage{min-height:380px}.page-wrap canvas{max-height:72vh}
+      .stage{min-height:390px}.page-wrap{height:72vh}
+      .page-wrap canvas{max-height:70vh}
+      .page-wrap.spread::before{width:14px}
+      .page-wrap.spread::after{width:1px}
       .controls{gap:7px}button{padding:9px 12px}.below{justify-content:center;text-align:center}
-      .reader:fullscreen .page-wrap{gap:0}
-      .reader:fullscreen .page-wrap canvas{max-width:100%;max-height:94vh}
+      .reader:fullscreen .page-wrap{height:96vh}
+      .reader:fullscreen .page-wrap canvas{max-height:92vh}
     }
   </style>
 </head>
@@ -116,6 +122,7 @@
   const prev = document.getElementById('prevBtn');
   const next = document.getElementById('nextBtn');
   const reader = document.querySelector('.reader');
+  const pageWrap = document.getElementById('pageWrap');
   let pdf = null, page = 1, rendering = false, queued = null, renderToken = 0;
 
   if (!pdfjs) {
@@ -124,15 +131,21 @@
   }
   pdfjs.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-  function isSpread() {
-    return !!document.fullscreenElement && window.innerWidth > 700 && page > 1;
+  // Book layout: cover alone, interior pages in pairs, final page alone.
+  function getPageGroup(requested) {
+    const last = pdf.numPages;
+    let n = Math.max(1, Math.min(last, requested));
+    if (n === 1 || n === last) return {start:n, end:n, single:true};
+    if (n % 2 === 1) n -= 1;
+    const end = Math.min(n + 1, last - (last > 1 ? 1 : 0));
+    return {start:n, end:end >= n ? end : n, single:false};
   }
 
   async function drawPage(pdfPageNumber, targetCanvas, maxWidth, maxHeight) {
     if (!pdfPageNumber) { targetCanvas.hidden = true; return; }
     const pdfPage = await pdf.getPage(pdfPageNumber);
     const base = pdfPage.getViewport({scale:1});
-    const scale = Math.min(maxWidth / base.width, maxHeight / base.height, 2.2);
+    const scale = Math.min(maxWidth / base.width, maxHeight / base.height, 2.4);
     const viewport = pdfPage.getViewport({scale});
     const ratio = Math.min(window.devicePixelRatio || 1, 2);
     targetCanvas.width = Math.floor(viewport.width * ratio);
@@ -145,38 +158,38 @@
     targetCanvas.hidden = false;
   }
 
-  async function renderPage(number) {
-    if (rendering) { queued = number; return; }
+  async function renderPage(requested) {
+    if (rendering) { queued = requested; return; }
     rendering = true;
     const token = ++renderToken;
     try {
-      const spread = isSpread();
-      const host = document.getElementById('pageWrap');
-      const availableWidth = host.clientWidth || Math.min(window.innerWidth - 40, 1100);
-      const availableHeight = spread ? window.innerHeight * .92 : window.innerHeight * .80;
+      const group = getPageGroup(requested);
+      const spread = !group.single;
+      const availableWidth = pageWrap.clientWidth || Math.min(window.innerWidth - 40, 1240);
+      const availableHeight = Math.min(pageWrap.clientHeight || window.innerHeight * .8, window.innerHeight * .93);
+      pageWrap.classList.toggle('spread', spread);
+      pageWrap.classList.toggle('single', !spread);
       if (spread) {
-        const rightNumber = number + 1 <= pdf.numPages ? number + 1 : null;
         await Promise.all([
-          drawPage(number, leftCanvas, availableWidth / 2, availableHeight),
-          drawPage(rightNumber, rightCanvas, availableWidth / 2, availableHeight)
+          drawPage(group.start, leftCanvas, availableWidth / 2, availableHeight),
+          drawPage(group.end, rightCanvas, availableWidth / 2, availableHeight)
         ]);
       } else {
         rightCanvas.hidden = true;
-        await drawPage(number, leftCanvas, availableWidth, availableHeight);
+        await drawPage(group.start, leftCanvas, availableWidth / 2, availableHeight);
       }
       if (token !== renderToken) return;
-      page = number;
+      page = group.start;
       loading.hidden = true;
-      leftCanvas.classList.remove('turn-next','turn-prev');
-      rightCanvas.classList.remove('turn-next','turn-prev');
-      counter.textContent = spread
-        ? `Pages ${number}–${Math.min(number + 1,pdf.numPages)} of ${pdf.numPages}`
-        : `Page ${number} of ${pdf.numPages}`;
-      progress.style.width = `${(Math.min(number + (spread ? 1 : 0),pdf.numPages)/pdf.numPages)*100}%`;
-      prev.disabled = page <= 1;
-      next.disabled = page >= pdf.numPages;
-      document.getElementById('firstBtn').disabled = page <= 1;
-      document.getElementById('lastBtn').disabled = page >= pdf.numPages;
+      [leftCanvas,rightCanvas].forEach(c=>c.classList.remove('turn-next','turn-prev'));
+      counter.textContent = group.single
+        ? `Page ${group.start} of ${pdf.numPages}`
+        : `Pages ${group.start}–${group.end} of ${pdf.numPages}`;
+      progress.style.width = `${(group.end/pdf.numPages)*100}%`;
+      prev.disabled = group.start === 1;
+      next.disabled = group.end >= pdf.numPages;
+      document.getElementById('firstBtn').disabled = group.start === 1;
+      document.getElementById('lastBtn').disabled = group.end >= pdf.numPages;
     } catch(e) {
       loading.hidden = false;
       loading.textContent = "Unable to display this page. Please refresh or download the PDF.";
@@ -187,37 +200,29 @@
     }
   }
 
-  function go(n) {
+  function goForward() {
     if (!pdf) return;
-    const spread = isSpread();
-    let target = Math.max(1, Math.min(pdf.numPages, n));
-    if (spread && target > 1 && target % 2 !== 0) target -= 1;
-    if (target === page) return;
-    const direction = target > page ? 'turn-next' : 'turn-prev';
-    [leftCanvas,rightCanvas].forEach(c => {
-      c.classList.remove('turn-next','turn-prev');
-      void c.offsetWidth;
-      if (!c.hidden) c.classList.add(direction);
-    });
-    setTimeout(() => renderPage(target), 140);
+    const group = getPageGroup(page);
+    if (group.end < pdf.numPages) renderPage(group.end + 1);
+  }
+  function goBack() {
+    if (!pdf) return;
+    const group = getPageGroup(page);
+    if (group.start > 1) renderPage(group.start === pdf.numPages ? group.start - 1 : group.start - 2);
   }
 
-  prev.addEventListener('click',()=>go(page - (isSpread() && page > 2 ? 2 : 1)));
-  next.addEventListener('click',()=>go(page + (isSpread() && page > 1 ? 2 : 1)));
-  document.getElementById('firstBtn').addEventListener('click',()=>go(1));
-  document.getElementById('lastBtn').addEventListener('click',()=>{
-    if (!pdf) return;
-    const last = pdf.numPages;
-    go(isSpread() && last > 1 && last % 2 === 1 ? last - 1 : last);
-  });
+  prev.addEventListener('click',goBack);
+  next.addEventListener('click',goForward);
+  document.getElementById('firstBtn').addEventListener('click',()=>renderPage(1));
+  document.getElementById('lastBtn').addEventListener('click',()=>renderPage(pdf ? pdf.numPages : 1));
   document.getElementById('fullBtn').addEventListener('click',async()=>{
     if (!document.fullscreenElement) await reader.requestFullscreen?.();
     else await document.exitFullscreen?.();
   });
   document.addEventListener('fullscreenchange',()=>{ if(pdf) renderPage(page); });
   document.addEventListener('keydown',e=>{
-    if (e.key === 'ArrowRight') go(page + (isSpread() && page > 1 ? 2 : 1));
-    if (e.key === 'ArrowLeft') go(page - (isSpread() && page > 2 ? 2 : 1));
+    if (e.key === 'ArrowRight') goForward();
+    if (e.key === 'ArrowLeft') goBack();
   });
 
   let touchX = 0;
@@ -225,7 +230,7 @@
     canvas.addEventListener('touchstart',e=>{touchX=e.changedTouches[0].screenX},{passive:true});
     canvas.addEventListener('touchend',e=>{
       const dx=e.changedTouches[0].screenX-touchX;
-      if(Math.abs(dx)>45) go(page+(dx<0?(isSpread() && page > 1 ? 2 : 1):-(isSpread() && page > 2 ? 2 : 1)));
+      if(Math.abs(dx)>45) (dx<0 ? goForward() : goBack());
     },{passive:true});
   });
 
